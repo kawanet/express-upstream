@@ -16,6 +16,12 @@
     "supertest": "^4.0.2",
     "typescript": "^3.8.3"
   },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "lib/",
+    "types/"
+  ],
   "homepage": "https://github.com/kawanet/express-upstream#readme",
   "keywords": [
     "expressjs",
@@ -30,9 +36,10 @@
     "url": "git+https://github.com/kawanet/express-upstream.git"
   },
   "scripts": {
+    "build": "tsc -p . && tsc -p types",
     "fixpack": "fixpack",
-    "test": "rm -fr test/tmp && ./node_modules/.bin/mocha -R spec test/*.js",
-    "tsc": "tsc -p . && tsc -p types",
+    "mocha": "./node_modules/.bin/mocha -R spec test/*.js",
+    "test": "npm run build && npm run mocha",
     "tsc-watch": "tsc --watch"
   },
   "typings": "./types/express-upstream.d.ts"

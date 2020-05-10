@@ -21,6 +21,7 @@ const defaultPorts: numMap = {
 
 const ignoreHeaders: numMap = {
     "cache-control": 1,
+    "content-security-policy": 1,
     "cookie": 1,
     "date": 1,
     "host": 1,

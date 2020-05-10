@@ -9,8 +9,10 @@ const express = require("express");
 const upstream = require("express-upstream");
 const app = express();
 
+// lookup local files at first
 app.use(express.static("htdocs"));
 
+// access remote server as fallback
 app.use(upstream("https://example.com"));
 
 app.listen(3000);
