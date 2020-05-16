@@ -1,7 +1,7 @@
 {
   "name": "express-upstream",
   "description": "Express.js proxy middleware to pass requests to upstream server",
-  "version": "0.1.0",
+  "version": "0.8.0",
   "author": "Yusuke Kawasaki <u-suke@kawa.net>",
   "contributors": [
     "Yusuke Kawasaki <u-suke@kawa.net>"
@@ -9,12 +9,12 @@
   "devDependencies": {
     "@types/express": "^4.17.6",
     "@types/mocha": "^7.0.2",
-    "@types/node": "^13.13.4",
+    "@types/node": "^14.0.1",
     "@types/supertest": "^2.0.9",
     "express": "^4.17.1",
     "mocha": "^7.1.2",
     "supertest": "^4.0.2",
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.2"
   },
   "files": [
     "LICENSE",
@@ -36,10 +36,12 @@
     "url": "git+https://github.com/kawanet/express-upstream.git"
   },
   "scripts": {
-    "build": "tsc -p . && tsc -p types",
+    "build": "npm run build-lib && npm run build-types",
+    "build-lib": "./node_modules/.bin/tsc -p .",
+    "build-types": "./node_modules/.bin/tsc -p types",
     "fixpack": "fixpack",
     "mocha": "./node_modules/.bin/mocha -R spec test/*.js",
-    "test": "npm run build && npm run mocha",
+    "test": "npm run mocha",
     "tsc-watch": "tsc --watch"
   },
   "typings": "./types/express-upstream.d.ts"
