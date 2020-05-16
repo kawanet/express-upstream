@@ -6,10 +6,11 @@ import * as https from "https";
 import {URL} from "url";
 
 export interface UpstreamOptions {
-    timeout?: number;
-    logger?: { log: (message: string) => void };
     httpAgent?: http.Agent;
     httpsAgent?: https.Agent;
+    ignore404?: boolean;
+    logger?: { log: (message: string) => void };
+    timeout?: number;
 }
 
 type numMap = { [type: string]: number };
@@ -32,6 +33,9 @@ const ignoreHeaders: numMap = {
 
 export function upstream(server: string, options?: UpstreamOptions): express.RequestHandler {
     if (!options) options = {} as UpstreamOptions;
+
+    const {ignore404, logger, timeout} = options;
+
     const url = new URL(server);
 
     const protoPort = defaultPorts[url.protocol];
@@ -42,8 +46,6 @@ export function upstream(server: string, options?: UpstreamOptions): express.Req
     const {port} = url;
 
     return (req, res, next) => {
-        const {logger, timeout} = options;
-
         const reqOpts = {} as http.RequestOptions;
         reqOpts.method = req.method;
         reqOpts.protocol = url.protocol;
@@ -64,6 +66,11 @@ export function upstream(server: string, options?: UpstreamOptions): express.Req
         const reqUp = http.request(reqOpts, resUp => {
             // copy response headers
             const {headers, statusCode} = resUp;
+
+            // fallback to the next RequestHandler when upstream response 404 Not Found
+            if (ignore404 && +statusCode === 404 && req.method === "GET") {
+                return next();
+            }
 
             res.status(statusCode);
 
