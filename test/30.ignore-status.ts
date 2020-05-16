@@ -23,15 +23,17 @@ describe(TITLE, () => {
     });
 
     // upstream respond
-    it("ignore404: false", async () => {
-        const local = getLocal({logger: console, ignore404: false});
+    it("ignoreStatus: null", async () => {
+        const local = getLocal({logger: console, ignoreStatus: null});
         await request(local).get("/404/").expect(404, "UPSTREAM");
+        await request(local).get("/500/").expect(500, "UPSTREAM");
     });
 
     // fallback to local
-    it("ignore404: true", async () => {
-        const local = getLocal({logger: console, ignore404: true});
+    it("ignoreStatus: /404/", async () => {
+        const local = getLocal({logger: console, ignoreStatus: /404/});
         await request(local).get("/404/").expect(200, "LOCAL");
+        await request(local).get("/500/").expect(500, "UPSTREAM");
     });
 });
 

@@ -15,8 +15,11 @@ const app = express();
 // lookup local files at first
 app.use(express.static("htdocs"));
 
-// access remote server as fallback
-app.use(upstream("https://example.com"));
+// access remote server otherwise
+app.use(upstream("https://example.com", {ignoreStatus: /404/}));
+
+// yet another fallback upstream server
+app.use(upstream("https://fallback.com"));
 
 app.listen(3000);
 ```

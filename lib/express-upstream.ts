@@ -8,7 +8,7 @@ import {URL} from "url";
 export interface UpstreamOptions {
     httpAgent?: http.Agent;
     httpsAgent?: https.Agent;
-    ignore404?: boolean;
+    ignoreStatus?: RegExp | { test: (status: string) => boolean };
     logger?: { log: (message: string) => void };
     timeout?: number;
 }
@@ -34,7 +34,7 @@ const ignoreHeaders: numMap = {
 export function upstream(server: string, options?: UpstreamOptions): express.RequestHandler {
     if (!options) options = {} as UpstreamOptions;
 
-    const {ignore404, logger, timeout} = options;
+    const {ignoreStatus, logger, timeout} = options;
 
     const url = new URL(server);
 
@@ -68,7 +68,7 @@ export function upstream(server: string, options?: UpstreamOptions): express.Req
             const {headers, statusCode} = resUp;
 
             // fallback to the next RequestHandler when upstream response 404 Not Found
-            if (ignore404 && +statusCode === 404 && req.method === "GET") {
+            if (ignoreStatus && ignoreStatus.test(String(statusCode)) && req.method === "GET") {
                 return next();
             }
 
