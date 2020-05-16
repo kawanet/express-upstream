@@ -20,7 +20,7 @@
     "LICENSE",
     "README.md",
     "lib/",
-    "types/"
+    "types/express-upstream.d.ts"
   ],
   "homepage": "https://github.com/kawanet/express-upstream#readme",
   "keywords": [
