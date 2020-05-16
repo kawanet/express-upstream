@@ -2,6 +2,9 @@
 
 Express.js proxy middleware to pass requests to upstream server
 
+[![Node.js CI](https://github.com/kawanet/express-upstream/workflows/Node.js%20CI/badge.svg?branch=master)](https://github.com/kawanet/express-upstream/actions/)
+[![npm version](https://badge.fury.io/js/express-upstream.svg)](https://www.npmjs.com/package/express-upstream)
+
 ## SYNOPSIS
 
 ```js
@@ -17,6 +20,10 @@ app.use(upstream("https://example.com"));
 
 app.listen(3000);
 ```
+
+See TypeScript declaration
+[express-upstream.d.ts](https://github.com/kawanet/express-upstream/blob/master/types/express-upstream.d.ts)
+for more detail.
 
 ## LICENSE
 
