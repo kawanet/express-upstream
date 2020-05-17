@@ -24,7 +24,7 @@ export interface UpstreamOptions {
     /**
      * Pass to the next RequestAgent if the upstream server respond the statusCode.
      * @example
-     * ignoreStatus: /404/
+     * ignoreStatus: /404|502/
      * ignoreStatus: { test: status => (+status === 404) }
      */
     ignoreStatus?: RegExp | { test: (status: string) => boolean };
@@ -107,14 +107,14 @@ export function upstream(server: string, options?: UpstreamOptions): express.Req
         Object.keys(req.headers).filter(key => !ignoreHeaders[key]).forEach(key => headers[key] = req.headers[key]);
         headers.host = url.host;
 
+        let started = 0;
+
         const reqUp = http.request(reqOpts, resUp => {
             // copy response headers
             const {headers, statusCode} = resUp;
 
             // fallback to the next RequestHandler when upstream response 404 Not Found
-            if (ignoreStatus && ignoreStatus.test(String(statusCode)) && req.method === "GET") {
-                return next();
-            }
+            if (!(started++) && allowNext(statusCode)) return next();
 
             res.status(statusCode);
 
@@ -126,10 +126,19 @@ export function upstream(server: string, options?: UpstreamOptions): express.Req
 
         reqUp.on("error", err => {
             if (logger) logger.log(err + "");
-            res.status(502).end();
+            const statusCode = 502;
+
+            // fallback to the next RequestHandler
+            if (!(started++) && allowNext(statusCode)) return next();
+
+            res.status(statusCode).end();
         });
 
         // pipe request body
         req.pipe(reqUp);
+
+        function allowNext(statusCode: number) {
+            return (ignoreStatus && ignoreStatus.test(String(statusCode)) && req.method === "GET");
+        }
     };
 }

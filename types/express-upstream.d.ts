@@ -19,7 +19,7 @@ export interface UpstreamOptions {
     /**
      * Pass to the next RequestAgent if the upstream server respond the statusCode.
      * @example
-     * ignoreStatus: /404/
+     * ignoreStatus: /404|502/
      * ignoreStatus: { test: status => (+status === 404) }
      */
     ignoreStatus?: RegExp | {

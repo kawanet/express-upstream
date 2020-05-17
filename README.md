@@ -16,7 +16,7 @@ const app = express();
 app.use(express.static("htdocs"));
 
 // access remote server otherwise
-app.use(upstream("https://example.com", {ignoreStatus: /404/}));
+app.use(upstream("https://example.com", {ignoreStatus: /404|502/}));
 
 // yet another fallback upstream server
 app.use(upstream("https://fallback.com"));
