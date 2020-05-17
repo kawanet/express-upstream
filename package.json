@@ -1,7 +1,7 @@
 {
   "name": "express-upstream",
   "description": "Express.js proxy middleware to pass requests to upstream server",
-  "version": "0.8.0",
+  "version": "0.8.2",
   "author": "Yusuke Kawasaki <u-suke@kawa.net>",
   "contributors": [
     "Yusuke Kawasaki <u-suke@kawa.net>"
@@ -27,6 +27,7 @@
     "expressjs",
     "middleware",
     "proxy",
+    "reverse",
     "upstream"
   ],
   "license": "MIT",

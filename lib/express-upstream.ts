@@ -57,6 +57,14 @@ const ignoreHeaders: numMap = {
     "vary": 1,
 };
 
+const defaultAgentOptions: http.AgentOptions = {
+    // Keep sockets around in a pool to be used by other requests in the future. Default = false
+    keepAlive: true,
+
+    // Socket timeout in milliseconds. This will set the timeout after the socket is connected.
+    timeout: 10000,
+}
+
 /**
  * Express.js proxy middleware to pass requests to upstream server
  * @see https://github.com/kawanet/express-upstream/
@@ -77,13 +85,18 @@ export function upstream(server: string, options?: UpstreamOptions): express.Req
 
     const {port} = url;
 
+    let httpAgent: http.Agent;
+    let httpsAgent: https.Agent;
+
     return (req, res, next) => {
         const reqOpts = {} as http.RequestOptions;
         reqOpts.method = req.method;
         reqOpts.protocol = url.protocol;
         reqOpts.host = url.hostname;
         if (port) reqOpts.port = port;
-        reqOpts.agent = (protoPort === 443) ? (options.httpsAgent || new https.Agent()) : (options.httpAgent || new http.Agent());
+        reqOpts.agent = (protoPort === 443) ?
+            (options.httpsAgent || httpsAgent || (httpsAgent = new https.Agent(defaultAgentOptions))) :
+            (options.httpAgent || httpAgent || (httpAgent = new http.Agent(defaultAgentOptions)));
         reqOpts.path = req.url;
 
         const reqURL = [url.protocol, "//" + url.host, reqOpts.path].join("");

@@ -33,7 +33,6 @@ export interface UpstreamOptions {
     logger?: {
         log: (message: string) => void;
     };
-    timeout?: number;
 }
 /**
  * Express.js proxy middleware to pass requests to upstream server
