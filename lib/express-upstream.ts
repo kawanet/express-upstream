@@ -28,6 +28,8 @@ const ignoreHeaders: numMap = {
     "host": 1,
     "referer": 1,
     "set-cookie": 1,
+    "te": 1,
+    "transfer-encoding": 1,
     "vary": 1,
 };
 
