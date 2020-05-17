@@ -6,9 +6,34 @@ import * as https from "https";
 import {URL} from "url";
 
 export interface UpstreamOptions {
+    /**
+     * HTTP agent
+     * @see https://nodejs.org/api/http.html
+     * @example
+     * httpAgent: new http.Agent({keepAlive: true})
+     */
     httpAgent?: http.Agent;
+
+    /**
+     * HTTPS agent
+     * @example
+     * httpsAgent: new https.Agent({keepAlive: true})
+     */
     httpsAgent?: https.Agent;
+
+    /**
+     * Pass to the next RequestAgent if the upstream server respond the statusCode.
+     * @example
+     * ignoreStatus: /404/
+     * ignoreStatus: { test: status => (+status === 404) }
+     */
     ignoreStatus?: RegExp | { test: (status: string) => boolean };
+
+    /**
+     * Logging
+     * @example
+     * logger: console
+     */
     logger?: { log: (message: string) => void };
     timeout?: number;
 }
@@ -32,6 +57,12 @@ const ignoreHeaders: numMap = {
     "transfer-encoding": 1,
     "vary": 1,
 };
+
+/**
+ * Express.js proxy middleware to pass requests to upstream server
+ * @see https://github.com/kawanet/express-upstream/
+ * @returns RequestHandler
+ */
 
 export function upstream(server: string, options?: UpstreamOptions): express.RequestHandler {
     if (!options) options = {} as UpstreamOptions;
