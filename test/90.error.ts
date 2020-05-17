@@ -1,6 +1,7 @@
 #!/usr/bin/env mocha -R spec
 
 import * as express from "express";
+import * as http from "http";
 import * as request from "supertest";
 
 import {upstream, UpstreamOptions} from "../lib/express-upstream";
@@ -14,7 +15,8 @@ describe(TITLE, () => {
     {
         const path = "/502/";
         it(path, async () => {
-            const agent = getAgent({logger: console, timeout: 500});
+            const httpAgent = new http.Agent({timeout: 500});
+            const agent = getAgent({logger: console, httpAgent: httpAgent});
             await agent.get(path).expect(502);
         });
     }

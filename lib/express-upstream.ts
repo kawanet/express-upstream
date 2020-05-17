@@ -35,7 +35,6 @@ export interface UpstreamOptions {
      * logger: console
      */
     logger?: { log: (message: string) => void };
-    timeout?: number;
 }
 
 type numMap = { [type: string]: number };
@@ -67,7 +66,7 @@ const ignoreHeaders: numMap = {
 export function upstream(server: string, options?: UpstreamOptions): express.RequestHandler {
     if (!options) options = {} as UpstreamOptions;
 
-    const {ignoreStatus, logger, timeout} = options;
+    const {ignoreStatus, logger} = options;
 
     const url = new URL(server);
 
@@ -86,7 +85,6 @@ export function upstream(server: string, options?: UpstreamOptions): express.Req
         if (port) reqOpts.port = port;
         reqOpts.agent = (protoPort === 443) ? (options.httpsAgent || new https.Agent()) : (options.httpAgent || new http.Agent());
         reqOpts.path = req.url;
-        if (timeout) reqOpts.timeout = timeout;
 
         const reqURL = [url.protocol, "//" + url.host, reqOpts.path].join("");
         if (logger) logger.log(reqURL);
