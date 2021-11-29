@@ -19,8 +19,8 @@
   "files": [
     "LICENSE",
     "README.md",
-    "lib/",
-    "types/express-upstream.d.ts"
+    "lib/*.js",
+    "types/*.d.ts"
   ],
   "homepage": "https://github.com/kawanet/express-upstream#readme",
   "keywords": [
@@ -37,11 +37,10 @@
     "url": "git+https://github.com/kawanet/express-upstream.git"
   },
   "scripts": {
-    "build": "npm run build-lib && npm run build-types",
-    "build-lib": "./node_modules/.bin/tsc -p .",
-    "build-types": "./node_modules/.bin/tsc -p types",
+    "build": "./node_modules/.bin/tsc -p .",
+    "prepack": "npm run build && npm test",
     "fixpack": "fixpack",
-    "mocha": "./node_modules/.bin/mocha -R spec test/*.js",
+    "mocha": "./node_modules/.bin/mocha test",
     "test": "npm run mocha",
     "tsc-watch": "tsc --watch"
   },

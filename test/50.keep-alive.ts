@@ -4,7 +4,7 @@ import * as express from "express";
 import * as http from "http";
 import * as request from "supertest";
 
-import {upstream} from "../lib/express-upstream";
+import {upstream} from "..";
 
 const TITLE = __filename.split("/").pop();
 

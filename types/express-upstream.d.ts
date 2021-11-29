@@ -1,7 +1,9 @@
 /// <reference types="node" />
-import * as express from "express";
-import * as http from "http";
-import * as https from "https";
+
+import type * as express from "express";
+import type * as http from "http";
+import type * as https from "https";
+
 export interface UpstreamOptions {
     /**
      * HTTP agent
@@ -10,12 +12,14 @@ export interface UpstreamOptions {
      * httpAgent: new http.Agent({keepAlive: true})
      */
     httpAgent?: http.Agent;
+
     /**
      * HTTPS agent
      * @example
      * httpsAgent: new https.Agent({keepAlive: true})
      */
     httpsAgent?: https.Agent;
+
     /**
      * Pass to the next RequestAgent if the upstream server respond the statusCode.
      * @example
@@ -25,6 +29,7 @@ export interface UpstreamOptions {
     ignoreStatus?: RegExp | {
         test: (status: string) => boolean;
     };
+
     /**
      * Logging
      * @example
@@ -34,6 +39,7 @@ export interface UpstreamOptions {
         log: (message: string) => void;
     };
 }
+
 /**
  * Express.js proxy middleware to pass requests to upstream server
  * @see https://github.com/kawanet/express-upstream/
