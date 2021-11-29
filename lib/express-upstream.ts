@@ -110,11 +110,16 @@ export function upstream(server: string, options?: UpstreamOptions): express.Req
         let started = 0;
 
         const reqUp = http.request(reqOpts, resUp => {
+            if (started++) return;
+
             // copy response headers
             const {headers, statusCode} = resUp;
 
             // fallback to the next RequestHandler when upstream response 404 Not Found
-            if (!(started++) && allowNext(statusCode)) return next();
+            if (allowNext(statusCode)) {
+                if (resUp.socket?.destroy && !resUp.socket.destroyed) resUp.socket.destroy();
+                return next();
+            }
 
             res.status(statusCode);
 
@@ -124,12 +129,16 @@ export function upstream(server: string, options?: UpstreamOptions): express.Req
             resUp.pipe(res);
         });
 
-        reqUp.on("error", err => {
+        reqUp.once("error", err => {
             if (logger) logger.log(err + "");
+            if (started++) return;
             const statusCode = 502;
 
             // fallback to the next RequestHandler
-            if (!(started++) && allowNext(statusCode)) return next();
+            if (allowNext(statusCode)) {
+                if (reqUp.socket?.destroy && !reqUp.socket.destroyed) reqUp.socket.destroy();
+                return next();
+            }
 
             res.status(statusCode).end();
         });
