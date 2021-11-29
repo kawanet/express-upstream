@@ -4,38 +4,7 @@ import * as express from "express";
 import * as http from "http";
 import * as https from "https";
 import {URL} from "url";
-
-export interface UpstreamOptions {
-    /**
-     * HTTP agent
-     * @see https://nodejs.org/api/http.html
-     * @example
-     * httpAgent: new http.Agent({keepAlive: true})
-     */
-    httpAgent?: http.Agent;
-
-    /**
-     * HTTPS agent
-     * @example
-     * httpsAgent: new https.Agent({keepAlive: true})
-     */
-    httpsAgent?: https.Agent;
-
-    /**
-     * Pass to the next RequestAgent if the upstream server respond the statusCode.
-     * @example
-     * ignoreStatus: /404|502/
-     * ignoreStatus: { test: status => (+status === 404) }
-     */
-    ignoreStatus?: RegExp | { test: (status: string) => boolean };
-
-    /**
-     * Logging
-     * @example
-     * logger: console
-     */
-    logger?: { log: (message: string) => void };
-}
+import type {UpstreamOptions} from "..";
 
 type numMap = { [type: string]: number };
 
@@ -110,11 +79,16 @@ export function upstream(server: string, options?: UpstreamOptions): express.Req
         let started = 0;
 
         const reqUp = http.request(reqOpts, resUp => {
+            if (started++) return;
+
             // copy response headers
             const {headers, statusCode} = resUp;
 
             // fallback to the next RequestHandler when upstream response 404 Not Found
-            if (!(started++) && allowNext(statusCode)) return next();
+            if (allowNext(statusCode)) {
+                if (resUp.socket?.destroy && !resUp.socket.destroyed) resUp.socket.destroy();
+                return next();
+            }
 
             res.status(statusCode);
 
@@ -124,12 +98,16 @@ export function upstream(server: string, options?: UpstreamOptions): express.Req
             resUp.pipe(res);
         });
 
-        reqUp.on("error", err => {
+        reqUp.once("error", err => {
             if (logger) logger.log(err + "");
+            if (started++) return;
             const statusCode = 502;
 
             // fallback to the next RequestHandler
-            if (!(started++) && allowNext(statusCode)) return next();
+            if (allowNext(statusCode)) {
+                if (reqUp.socket?.destroy && !reqUp.socket.destroyed) reqUp.socket.destroy();
+                return next();
+            }
 
             res.status(statusCode).end();
         });
