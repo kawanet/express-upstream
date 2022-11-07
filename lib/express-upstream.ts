@@ -1,10 +1,9 @@
 // express-upstream.ts
 
-import * as express from "express";
 import * as http from "http";
 import * as https from "https";
 import {URL} from "url";
-import type {UpstreamOptions} from "..";
+import type * as types from "../types/express-upstream";
 
 type numMap = { [type: string]: number };
 
@@ -40,8 +39,8 @@ const defaultAgentOptions: http.AgentOptions = {
  * @returns RequestHandler
  */
 
-export function upstream(server: string, options?: UpstreamOptions): express.RequestHandler {
-    if (!options) options = {} as UpstreamOptions;
+export const upstream: typeof types.upstream = (server, options) => {
+    if (!options) options = {} as types.UpstreamOptions;
 
     const {ignoreStatus, logger} = options;
 

@@ -4,7 +4,7 @@ import type * as express from "express";
 import type * as http from "http";
 import type * as https from "https";
 
-export interface UpstreamOptions {
+declare interface UpstreamOptions {
     /**
      * HTTP agent
      * @see https://nodejs.org/api/http.html
@@ -45,4 +45,4 @@ export interface UpstreamOptions {
  * @see https://github.com/kawanet/express-upstream/
  * @returns RequestHandler
  */
-export declare function upstream(server: string, options?: UpstreamOptions): express.RequestHandler;
+export declare const upstream: (server: string, options?: UpstreamOptions) => express.RequestHandler;
