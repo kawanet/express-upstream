@@ -8,8 +8,9 @@ Express.js proxy middleware to pass requests to upstream server
 ## SYNOPSIS
 
 ```js
-const express = require("express");
-const upstream = require("express-upstream");
+import express from "express";
+import {upstream} from "express-upstream";
+
 const app = express();
 
 // lookup local files at first
@@ -32,7 +33,7 @@ for more detail.
 
 The MIT License (MIT)
 
-Copyright (c) 2020-2022 Yusuke Kawasaki
+Copyright (c) 2020-2024 Yusuke Kawasaki
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -1,17 +1,15 @@
 #!/usr/bin/env mocha -R spec
 
-import * as express from "express";
+import express from "express";
 import * as http from "http";
-import * as request from "supertest";
+import request from "supertest";
 
-import {upstream, UpstreamOptions} from "..";
-
-const TITLE = __filename.split("/").pop();
+import {upstream, UpstreamOptions} from "../lib/express-upstream.js"
 
 const TEST_PORT = +process.env.TEST_PORT || 3000;
 const UPSTREAM = "http://127.0.0.1:" + TEST_PORT;
 
-describe(TITLE, () => {
+describe("30.ignore-status.ts", () => {
     let server: http.Server;
 
     before(done => {
