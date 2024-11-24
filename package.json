@@ -45,9 +45,9 @@
   "scripts": {
     "build": "make",
     "fixpack": "fixpack",
-    "mocha": "./node_modules/.bin/mocha test",
     "prepack": "make clean all test",
     "test": "make all test"
   },
+  "type": "commonjs",
   "typings": "./types/express-upstream.d.ts"
 }
