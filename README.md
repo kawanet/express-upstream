@@ -8,8 +8,9 @@ Express.js proxy middleware to pass requests to upstream server
 ## SYNOPSIS
 
 ```js
-const express = require("express");
-const upstream = require("express-upstream");
+import express from "express";
+import {upstream} from "express-upstream";
+
 const app = express();
 
 // lookup local files at first
