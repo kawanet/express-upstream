@@ -1,8 +1,8 @@
 #!/usr/bin/env mocha -R spec
 
-import * as express from "express";
+import express from "express";
 import * as http from "http";
-import * as request from "supertest";
+import request from "supertest";
 
 import {upstream, UpstreamOptions} from "../lib/express-upstream.js";
 
