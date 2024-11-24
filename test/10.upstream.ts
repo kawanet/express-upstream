@@ -4,14 +4,12 @@ import * as express from "express";
 import * as http from "http";
 import * as request from "supertest";
 
-import {upstream, UpstreamOptions} from "..";
-
-const TITLE = __filename.split("/").pop();
+import {upstream, UpstreamOptions} from "../lib/express-upstream.js";
 
 const TEST_PORT = +process.env.TEST_PORT || 3000;
 const UPSTREAM = "http://127.0.0.1:" + TEST_PORT;
 
-describe(TITLE, () => {
+describe("10.upstream.ts", () => {
     let server: http.Server;
     const agent = getAgent({logger: console});
 

@@ -5,14 +5,12 @@ import * as express from "express";
 import * as http from "http";
 import * as request from "supertest";
 
-import {upstream} from "..";
-
-const TITLE = __filename.split("/").pop();
+import {upstream} from "../lib/express-upstream.js"
 
 const TEST_PORT = +process.env.TEST_PORT || 3000;
 const UPSTREAM = "http://127.0.0.1:" + TEST_PORT;
 
-describe(TITLE, () => {
+describe("40.origin-path.ts", () => {
     let server: http.Server;
 
     before(done => {

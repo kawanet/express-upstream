@@ -5,6 +5,8 @@ import * as https from "https";
 import {URL} from "url";
 import type * as types from "../types/express-upstream";
 
+export type UpstreamOptions = types.UpstreamOptions
+
 type numMap = { [type: string]: number };
 
 const defaultPorts: numMap = {
