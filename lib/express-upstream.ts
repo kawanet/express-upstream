@@ -1,9 +1,12 @@
 // express-upstream.ts
 
-import * as http from "http";
-import * as https from "https";
-import {URL} from "url";
-import type * as types from "../types/express-upstream";
+import * as http from "node:http";
+import * as https from "node:https";
+import {URL} from "node:url";
+// Self-reference via the package name so `tsc --noEmit` resolves these types
+// through `package.json` `exports` — the same path an external consumer would
+// take. If the `exports.types` mapping ever breaks, the build fails here.
+import type * as types from "express-upstream";
 
 export type UpstreamOptions = types.UpstreamOptions
 
