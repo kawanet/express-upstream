@@ -15,13 +15,14 @@ import {upstream} from "express-upstream";
 
 const app = express();
 
-// lookup local files at first
+// Try local static files first.
 app.use(express.static("htdocs"));
 
-// access remote server otherwise
+// Fall back to a remote upstream; pass through to the next middleware
+// when the upstream responds with 404 or 502.
 app.use(upstream("https://example.com", {ignoreStatus: /404|502/}));
 
-// yet another fallback upstream server
+// Final fallback to a secondary upstream.
 app.use(upstream("https://fallback.com"));
 
 app.listen(3000);

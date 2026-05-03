@@ -39,9 +39,10 @@ const defaultAgentOptions: http.AgentOptions = {
 }
 
 /**
- * Express.js proxy middleware to pass requests to upstream server
+ * Express.js proxy middleware that forwards each incoming request to an
+ * upstream server. Returns a RequestHandler suitable for `app.use(...)`.
+ *
  * @see https://github.com/kawanet/express-upstream/
- * @returns RequestHandler
  */
 
 export const upstream: typeof types.upstream = (server, options) => {
