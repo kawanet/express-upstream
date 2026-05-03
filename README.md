@@ -1,6 +1,8 @@
 # express-upstream
 
-Express.js proxy middleware to pass requests to upstream server
+Express.js proxy middleware to pass requests to an upstream server.
+
+Works with Express 4 and 5.
 
 [![Node.js CI](https://github.com/kawanet/express-upstream/workflows/Node.js%20CI/badge.svg?branch=master)](https://github.com/kawanet/express-upstream/actions/)
 [![npm version](https://badge.fury.io/js/express-upstream.svg)](https://www.npmjs.com/package/express-upstream)
@@ -13,13 +15,14 @@ import {upstream} from "express-upstream";
 
 const app = express();
 
-// lookup local files at first
+// Try local static files first.
 app.use(express.static("htdocs"));
 
-// access remote server otherwise
+// Fall back to a remote upstream; pass through to the next middleware
+// when the upstream responds with 404 or 502.
 app.use(upstream("https://example.com", {ignoreStatus: /404|502/}));
 
-// yet another fallback upstream server
+// Final fallback to a secondary upstream.
 app.use(upstream("https://fallback.com"));
 
 app.listen(3000);
@@ -33,7 +36,7 @@ for more detail.
 
 The MIT License (MIT)
 
-Copyright (c) 2020-2024 Yusuke Kawasaki
+Copyright (c) 2020-2026 Yusuke Kawasaki
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

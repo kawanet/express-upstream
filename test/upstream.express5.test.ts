@@ -1,0 +1,20 @@
+// Test entry for the Express 5 line.
+
+import {describe} from "node:test";
+import express from "express5";
+
+import {runUpstreamTests} from "./lib/upstream.ts";
+import {runPostTests} from "./lib/post.ts";
+import {runIgnoreStatusTests} from "./lib/ignore-status.ts";
+import {runOriginPathTests} from "./lib/origin-path.ts";
+import {runKeepAliveTests} from "./lib/keep-alive.ts";
+import {runErrorTests} from "./lib/error.ts";
+
+describe("upstream.express5.test.ts", () => {
+    runUpstreamTests(express);
+    runPostTests(express);
+    runIgnoreStatusTests(express);
+    runOriginPathTests(express);
+    runKeepAliveTests(express);
+    runErrorTests(express);
+});
