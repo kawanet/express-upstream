@@ -4,8 +4,8 @@ Express.js proxy middleware to pass requests to an upstream server.
 
 Works with Express 4 and 5.
 
-[![Node.js CI](https://github.com/kawanet/express-upstream/workflows/Node.js%20CI/badge.svg?branch=master)](https://github.com/kawanet/express-upstream/actions/)
-[![npm version](https://badge.fury.io/js/express-upstream.svg)](https://www.npmjs.com/package/express-upstream)
+[![Node.js CI](https://github.com/kawanet/express-upstream/actions/workflows/nodejs.yml/badge.svg?branch=master)](https://github.com/kawanet/express-upstream/actions/)
+[![npm version](https://img.shields.io/npm/v/express-upstream)](https://www.npmjs.com/package/express-upstream)
 
 ## SYNOPSIS
 
