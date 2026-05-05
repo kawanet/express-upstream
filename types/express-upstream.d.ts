@@ -4,7 +4,9 @@ import type * as express from "express";
 import type * as http from "http";
 import type * as https from "https";
 
-declare interface UpstreamOptions {
+export {} // external module indicator
+
+export interface UpstreamOptions {
     /**
      * Custom HTTP agent used to dial the upstream when the URL scheme is
      * `http:`. If omitted, a default `http.Agent({keepAlive: true})` is
