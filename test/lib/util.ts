@@ -2,10 +2,14 @@
 // Kept minimal so each topic file can stay focused on its scenarios.
 
 import * as http from "node:http";
+import type {Express} from "express";
 
-// We only need to accept the Express default export by structure.
-// The v4 and v5 types differ, so route through `any` for structural compat.
-export type ExpressModule = any;
+// Express factory shape that includes both the call signature and the
+// namespace methods (`.static`, `.Router`, `.json`, `.raw`, ...) the
+// runners reach for. Express ships as a CommonJS `export = e`
+// namespace, so `typeof import("express")` resolves to the value of
+// `import express from "express"` directly (no `.default`).
+export type ExpressModule = typeof import("express");
 
 // Bind on a random port so two test entry files (express4 / express5) can
 // run in parallel without contending for a fixed TEST_PORT.
@@ -15,7 +19,7 @@ export type ExpressModule = any;
 // Capturing that returned server (rather than re-using the app reference) is
 // important because the Express app itself does not expose `.address()` and
 // using it would silently throw inside the listening callback.
-export function startServer(app: ExpressModule): Promise<{server: http.Server, url: string}> {
+export function startServer(app: Express): Promise<{server: http.Server, url: string}> {
     return new Promise((resolve, reject) => {
         const server: http.Server = app.listen(0, "127.0.0.1", () => {
             const addr = server.address();
