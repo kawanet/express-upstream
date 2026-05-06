@@ -8,17 +8,12 @@ CJS_DST := ../dist/express-upstream.cjs
 MJS_CONFIG := ./rollup-mjs.config.ts
 CJS_CONFIG := ./rollup-cjs.config.ts
 
-# Bundle is small: this package is a single source file that only uses
-# node:http / node:https / node:url at runtime (all kept external) and
-# has no production dependencies. `express` is type-only here so it is
-# external too. Anything noticeably larger means an accidental bundling
-# of a Node built-in or of `express` itself — fail the build so it
-# cannot slip in.
-MAX_BYTES := 15000
+# The middleware itself is small. If it gets significantly larger,
+# it might indicate an accidental inclusion of an external dependency or
+# a Node.js built-in.
+MAX_BYTES := 5000
 
-# Every named export the package documents must survive the round trip
-# through both CJS and ESM bundles. List them once and assert in both
-# smoke checks below.
+# Documentation-specified named exports that must be verified in the bundles.
 NAMED_EXPORTS := upstream
 
 ALL := $(MJS_DST) $(CJS_DST)
@@ -30,6 +25,7 @@ BUILDABLE := $(shell node -e 'console.log(process.features.typescript ? "YES" : 
 
 ####
 
+# Build all artifacts.
 all: is-buildable $(ALL)
 
 # Gate that fails loudly when type-strip is unavailable; consumed by `all`
@@ -73,10 +69,12 @@ smoke-cjs: $(CJS_DST)
 ####
 
 # Build, run smoke tests, and conditionally run full tests (tsc and node:test).
+# Skip during 'npm install' (npm_command=install) to prevent redundant tests in CI and local dev.
 test: all smoke $(TYPES)
 	@ [ "$$npm_command" != "install" ] || echo "npm install detected: skipping full tests."
 	@ [ "$$npm_command" = "install" ] || $(MAKE) test-ts
 
+# Actual test commands requiring Node.js 22+.
 test-ts:
 	../node_modules/.bin/tsc --noEmit
 	cd .. && node --test test/*.test.ts
