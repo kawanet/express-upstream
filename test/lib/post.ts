@@ -1,11 +1,11 @@
 // 20.post: POST body forwarding (raw bytes echo).
 
-import {after, before, describe, it} from "node:test"
 import * as http from "node:http"
+import {after, before, describe, it} from "node:test"
 import request from "supertest"
 
 import {upstream, type UpstreamOptions} from "../../lib/express-upstream.ts"
-import {type ExpressModule, closeServer, startServer} from "./util.ts"
+import {closeServer, startServer, type ExpressModule} from "./util.ts"
 
 const BINARY = "application/octet-stream"
 

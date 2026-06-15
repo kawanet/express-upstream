@@ -1,8 +1,8 @@
 // 40.origin-path: how the request path is rewritten when the origin URL has a path component.
 
-import {after, before, describe, it} from "node:test"
 import {strict as assert} from "node:assert"
 import * as http from "node:http"
+import {after, before, describe, it} from "node:test"
 import request from "supertest"
 
 import {upstream} from "../../lib/express-upstream.ts"

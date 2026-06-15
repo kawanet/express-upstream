@@ -1,7 +1,7 @@
 // 90.error: upstream unreachable yields a 502 from the middleware.
 
-import {after, before, describe, it} from "node:test"
 import * as http from "node:http"
+import {after, before, describe, it} from "node:test"
 import request from "supertest"
 
 import {upstream, type UpstreamOptions} from "../../lib/express-upstream.ts"

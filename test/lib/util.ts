@@ -1,8 +1,8 @@
 // Shared helpers for the per-topic test modules.
 // Kept minimal so each topic file can stay focused on its scenarios.
 
-import * as http from "node:http"
 import type {Express} from "express"
+import * as http from "node:http"
 
 // Express factory shape that includes both the call signature and the
 // namespace methods (`.static`, `.Router`, `.json`, `.raw`, ...) the

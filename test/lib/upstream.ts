@@ -1,11 +1,11 @@
 // 10.upstream: basic GET pass-through to the upstream origin.
 
-import {after, before, describe, it} from "node:test"
 import * as http from "node:http"
+import {after, before, describe, it} from "node:test"
 import request from "supertest"
 
 import {upstream, type UpstreamOptions} from "../../lib/express-upstream.ts"
-import {type ExpressModule, closeServer, startServer} from "./util.ts"
+import {closeServer, startServer, type ExpressModule} from "./util.ts"
 
 export function runUpstreamTests(express: ExpressModule): void {
     describe("upstream: basic GET pass-through", () => {
