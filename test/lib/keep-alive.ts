@@ -3,7 +3,6 @@
 import * as http from "node:http"
 import {after, before, describe, it} from "node:test"
 import request from "supertest"
-
 import {upstream} from "../../lib/express-upstream.ts"
 import {type ExpressModule, closeServer, startServer} from "./util.ts"
 
