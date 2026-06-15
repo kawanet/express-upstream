@@ -1,8 +1,8 @@
 /// <reference types="node" />
 
-import type * as express from "express";
-import type * as http from "http";
-import type * as https from "https";
+import type * as express from "express"
+import type * as http from "http"
+import type * as https from "https"
 
 export {} // external module indicator
 
@@ -16,7 +16,7 @@ export interface UpstreamOptions {
      * @example
      * httpAgent: new http.Agent({keepAlive: true})
      */
-    httpAgent?: http.Agent;
+    httpAgent?: http.Agent
 
     /**
      * Custom HTTPS agent used to dial the upstream when the URL scheme is
@@ -26,7 +26,7 @@ export interface UpstreamOptions {
      * @example
      * httpsAgent: new https.Agent({keepAlive: true})
      */
-    httpsAgent?: https.Agent;
+    httpsAgent?: https.Agent
 
     /**
      * Pass control to the next middleware in the Express chain when the
@@ -43,8 +43,8 @@ export interface UpstreamOptions {
      * ignoreStatus: { test: status => (+status === 404) }
      */
     ignoreStatus?: RegExp | {
-        test: (status: string) => boolean;
-    };
+        test: (status: string) => boolean
+    }
 
     /**
      * Optional logger used for diagnostic output (one line per outbound
@@ -55,8 +55,8 @@ export interface UpstreamOptions {
      * logger: console
      */
     logger?: {
-        log: (message: string) => void;
-    };
+        log: (message: string) => void
+    }
 }
 
 /**
@@ -68,4 +68,4 @@ export interface UpstreamOptions {
  *
  * @see https://github.com/kawanet/express-upstream/
  */
-export declare const upstream: (server: string, options?: UpstreamOptions) => express.RequestHandler;
+export declare const upstream: (server: string, options?: UpstreamOptions) => express.RequestHandler
