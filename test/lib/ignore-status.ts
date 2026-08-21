@@ -18,8 +18,8 @@ export function runIgnoreStatusTests(express: ExpressModule): void {
         after(() => closeServer(server))
 
         // upstream respond
-        it("ignoreStatus: null", async () => {
-            const local = getLocal(express, UPSTREAM, {logger: console, ignoreStatus: null})
+        it("ignoreStatus: unset", async () => {
+            const local = getLocal(express, UPSTREAM, {logger: console})
             await request(local).get("/404/").expect(404, "UPSTREAM")
             await request(local).get("/500/").expect(500, "UPSTREAM")
         })
