@@ -86,8 +86,10 @@ export const upstream: typeof types.upstream = (server, options) => {
         const reqUp = http.request(reqOpts, resUp => {
             if (started++) return
 
-            // copy response headers
-            const {headers, statusCode} = resUp
+            // copy response headers. statusCode is typed optional on
+            // IncomingMessage but is always set once the response arrives.
+            const {headers} = resUp
+            const statusCode = resUp.statusCode!
 
             // fallback to the next RequestHandler when upstream response 404 Not Found
             if (allowNext(statusCode)) {
@@ -97,7 +99,7 @@ export const upstream: typeof types.upstream = (server, options) => {
 
             res.status(statusCode)
 
-            Object.keys(headers).filter(key => !ignoreHeaders[key]).forEach(key => res.setHeader(key, headers[key]))
+            Object.keys(headers).filter(key => !ignoreHeaders[key]).forEach(key => res.setHeader(key, headers[key]!))
 
             // pipe response body
             resUp.pipe(res)
